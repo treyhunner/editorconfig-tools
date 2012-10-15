@@ -1,0 +1,7 @@
+; http://editorconfig.org
+
+[*.py]
+indent_style = space
+indent_size = 4
+tab_width = 8
+charset = UTF-8
