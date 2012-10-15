@@ -112,7 +112,8 @@ class EditorConfigChecker(EditorConfigToolObject):
                     correctly_indented += 1
             if lineno and float(correctly_indented) / lineno < 0.05:
                 errors.add("Over 5% of lines appear to be incorrectly indented")
-            check_line(self.check_final_newline, 'insert_final_newline')
+            if lineno > 0:
+                check_line(self.check_final_newline, 'insert_final_newline')
 
         return list(errors)
 
