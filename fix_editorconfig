@@ -7,7 +7,7 @@ from editorconfig import get_properties, EditorConfigError
 
 
 def main(command, *args):
-    checker = PropertyChecker()
+    checker = EditorConfigFixer()
     for filename in args:
         try:
             props = get_properties(abspath(filename))
