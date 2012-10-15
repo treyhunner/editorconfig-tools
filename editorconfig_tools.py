@@ -55,7 +55,6 @@ class EditorConfigChecker(EditorConfigToolObject):
                 found_end_of_line = eol_format
                 break
         if found_end_of_line and end_of_line != found_end_of_line:
-            print repr(line)
             return "%s line ending found" % found_end_of_line
 
     def check_final_newline(self, last_line, insert_final_newline):
