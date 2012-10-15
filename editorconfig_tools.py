@@ -29,7 +29,7 @@ class EditorConfigChecker(EditorConfigToolObject):
         """Return error string iff incorrect characters found in indentation"""
         if indent_style == 'space' and '\t' in line:
             return "Tab indentation found"
-        elif indent_style == 'tab' and re.search('^\s* \s* '):
+        elif indent_style == 'tab' and re.search('^\s* \s* ', line):
             return "Space indentation found"
 
     def check_charset(self, first_line, charset):
