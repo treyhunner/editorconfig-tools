@@ -154,6 +154,8 @@ class EditorConfigFixer(EditorConfigToolObject):
         def fix_line(function, property_name):
             if property_name in properties:
                 return function(line, properties[property_name])
+            else:
+                return line
 
         end_of_line = self.line_endings.get(properties.get('end_of_line'), '\n')
         with open(filename, 'r+') as f:
