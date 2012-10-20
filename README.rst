@@ -1,12 +1,15 @@
-# EditorConfig Tools
+EditorConfig Tools
+==================
 
-## Goals of this project:
+Goals of this project
+---------------------
 
 * Create tool to infer format for ``.editorconfig`` file from current code
 * Create tool to validate current code from existing ``.editorconfig`` files
 * Create tool to fix style errors in code from existing ``.editorconfig`` files
 
-## Examples
+Examples
+--------
 
 Here is an example of the command-line API we want to support::
 
@@ -46,7 +49,8 @@ Here is an example of the command-line API we want to support::
     trim_trailing_whitespace = true
 
 
-## Project Status
+Project Status
+--------------
 
 This project is not yet completed.  Feel free to play with the existing code,
 but don't expect it to work well (or at all) yet.
