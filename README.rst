@@ -21,7 +21,7 @@ Here is an example of the command-line API we want to support::
     $ check_editorconfig *
     Makefile: Tab indentation found
 
-    $ guess_editorconfig *
+    $ infer_editorconfig *
     [*]
     indent_style = space
     indent_size = 4
@@ -34,7 +34,7 @@ Here is an example of the command-line API we want to support::
     indent_style = tab
     indent_size = N/A
 
-    $ check_editorconfig --fix *
+    $ fix_editorconfig *
     Makefile: Converted tabs to spaces
 
     $ check_editorconfig *
