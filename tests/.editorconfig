@@ -1,0 +1,12 @@
+root = true
+
+[lf_*.txt]
+end_of_line = lf
+insert_final_newline = true
+
+[cr_*.txt]
+end_of_line = cr
+
+[crlf_*.txt]
+end_of_line = crlf
+insert_final_newline = false
