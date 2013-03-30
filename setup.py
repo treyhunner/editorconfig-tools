@@ -14,8 +14,8 @@ setup(
     long_description=open('README.rst').read(),
     entry_points={
         'console_scripts': [
-            'fix_editorconfig = fix_editorconfig:main',
-            'check_editorconfig = check_editorconfig:main',
+            'fix_editorconfig = editorconfig_tools.fix_editorconfig:main',
+            'check_editorconfig = editorconfig_tools.check_editorconfig:main',
         ]
     },
     test_suite='test_tools',

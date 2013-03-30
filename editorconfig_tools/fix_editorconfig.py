@@ -6,7 +6,7 @@ from editorconfig_tools import EditorConfigChecker
 from editorconfig import get_properties, EditorConfigError
 
 
-def main(command, *args):
+def main(*args):
     for filename in args:
         checker = EditorConfigChecker(fix=True)
         try:
