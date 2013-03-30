@@ -1,6 +1,11 @@
 EditorConfig Tools
 ==================
 
+.. image:: https://secure.travis-ci.org/treyhunner/editorconfig-tools.png?branch=master
+   :target: http://travis-ci.org/treyhunner/editorconfig-tools
+.. image:: https://coveralls.io/repos/treyhunner/editorconfig-tools/badge.png?branch=master
+   :target: https://coveralls.io/r/treyhunner/editorconfig-tools
+
 Goals of this project
 ---------------------
 
