@@ -18,4 +18,5 @@ setup(
             'check_editorconfig = check_editorconfig:main',
         ]
     },
+    test_suite='test_tools',
 )
