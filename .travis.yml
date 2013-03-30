@@ -1,10 +1,10 @@
 language: python
 
 python:
-  - "2.7"
+    - "2.7"
 
 install:
-  - pip install coverage coveralls --use-mirrors
+    - pip install coverage coveralls --use-mirrors
 
 script: coverage run --branch --source=editorconfig_tools setup.py test
 
