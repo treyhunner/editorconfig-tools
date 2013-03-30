@@ -1,1 +1,6 @@
 *.pyc
+EditorConfig_Tools.egg-info/*
+build/*
+dist/*
+.coverage
+.tox/
