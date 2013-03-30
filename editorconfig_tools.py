@@ -113,7 +113,7 @@ class EditorConfigChecker(EditorConfigToolObject):
                 line = handle_line(self.check_trailing_whitespace,
                            'trim_trailing_whitespace')
                 if ('indent_style' in properties and
-                    'indent_size' in properties and
+                    'tab_width' in properties and
                     properties['indent_size'] == properties['tab_width']):
                     line = handle_line(self.check_indentation, 'indent_style')
                 if properties.get('indent_style') == 'space':
