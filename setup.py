@@ -5,7 +5,7 @@ required = ['editorconfig', 'clint']
 
 setup(
     name='EditorConfig Tools',
-    #version=editorconfig_tools.__version__,
+    version=editorconfig_tools.__version__,
     author='EditorConfig Team',
     packages=['editorconfig_tools'],
     install_requires=required,
