@@ -54,6 +54,8 @@ class EditorConfigChecker(EditorConfigToolObject):
 
     def check_final_newline(self, line, insert_final_newline):
         """Return given final line with newline added/removed if necessary"""
+        if not line:
+            return line
         has_final_newline = line[-1:] in ('\r', '\n')
         if (insert_final_newline in ('true', 'false') and
             insert_final_newline != str(has_final_newline).lower()):
