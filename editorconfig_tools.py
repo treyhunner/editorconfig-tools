@@ -68,6 +68,7 @@ class EditorConfigChecker(EditorConfigToolObject):
                 return re.sub(r'\r?\n?$', r'\n', line)
             elif insert_final_newline == 'false':
                 return re.sub(r'\r?\n?$', '', line)
+        return line
 
     def check_trailing_whitespace(self, line, trim_trailing_whitespace):
         """Return line with whitespace trimmed if necessary"""
@@ -105,9 +106,8 @@ class EditorConfigChecker(EditorConfigToolObject):
                 end_of_line = None
                 newline = None
             for lineno, line in enumerate(f):
-                if end_of_line is None:
+                if end_of_line is None and f.newlines:
                     newline = f.newlines[0]
-                    end_of_line = self.newlines[newline]
                 if lineno == 0:
                     handle_line(self.check_charset, 'charset')
                 line = handle_line(self.check_trailing_whitespace,
@@ -123,22 +123,22 @@ class EditorConfigChecker(EditorConfigToolObject):
                         correctly_indented += 1
                 else:
                     correctly_indented += 1
-                if self.auto_fix:
-                    if end_of_line:
-                        line = line.replace('\n', newline)
+                if self.auto_fix and newline:
+                    line = line.replace('\n', newline)
                     lines.append(line)
-            if type(f.newlines) is tuple:
+            if type(f.newlines) is tuple and end_of_line:
                 self.errors.add("Mixed line endings found: %s" %
                                 ','.join(self.newlines[n] for n in f.newlines))
-            elif newline != f.newlines:
+            elif end_of_line is not None and newline != f.newlines:
                 self.errors.add("Incorrect line ending found: %s" %
-                                self.newlines[f.newlines])
+                                self.newlines.get(f.newlines))
             if lineno and float(correctly_indented) / lineno < 0.05:
                 self.errors.add("Over 5% of lines appear to be incorrectly indented")
+            line = handle_line(self.check_final_newline,
+                               'insert_final_newline')
             if self.auto_fix and line is not None:
-                line = handle_line(self.check_final_newline,
-                                   'insert_final_newline')
-                line = line.replace('\n', newline)
+                if newline:
+                    line = line.replace('\n', newline)
                 lines[-1] = line
             if self.auto_fix:
                 f.seek(0)
