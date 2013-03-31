@@ -10,3 +10,18 @@ end_of_line = cr
 [crlf_*.txt]
 end_of_line = crlf
 insert_final_newline = false
+
+[utf-8_*.txt]
+charset = utf-8
+
+[utf-8-bom_*.txt]
+charset = utf-8-bom
+
+[latin-1_*.txt]
+charset = latin1
+
+[utf-16be_*.txt]
+charset = utf-16be
+
+[utf-16le_*.txt]
+charset = utf-16le
