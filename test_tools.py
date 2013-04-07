@@ -125,3 +125,17 @@ class CharsetTests(EditorConfigTestCase):
         self.assertFileErrors('utf-16le_invalid_latin1.txt', [
             "Charset utf-8 or latin1 found",
         ])
+
+
+class TrailingWhitespaceTest(EditorConfigTestCase):
+
+    """Tests for EditorConfigChecker trim_trailing_whitespace"""
+
+    def test_check_trim(self):
+        self.assertFileErrors('trim_valid.txt', [])
+        self.assertFileErrors('trim_invalid1.txt', [
+            "Trailing whitespace found"
+        ])
+        self.assertFileErrors('trim_invalid2.txt', [
+            "Trailing whitespace found"
+        ])
