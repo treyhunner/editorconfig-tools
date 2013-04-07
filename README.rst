@@ -23,10 +23,12 @@ Here is an example of the command-line API we want to support::
     indent_style = space
     indent_size = 4
 
-    $ check_editorconfig *
-    Makefile: Tab indentation found
+    $ check_editorconfig test/lf_*.txt
+    tests/lf_invalid_crlf.txt: Incorrect line ending found: crlf
+    tests/lf_invalid_crlf.txt: No final newline found
+    tests/lf_invalid_cr.txt: Incorrect line ending found: cr
 
-    $ infer_editorconfig *
+    $ check_editorconfig --generate *
     [*]
     indent_style = space
     indent_size = 4
@@ -39,19 +41,10 @@ Here is an example of the command-line API we want to support::
     indent_style = tab
     indent_size = N/A
 
-    $ fix_editorconfig *
+    $ check_editorconfig --fix *
     Makefile: Converted tabs to spaces
 
     $ check_editorconfig *
-
-    $ guess_editorconfig *
-    [*]
-    indent_style = space
-    indent_size = 4
-    end_of_line = lf
-    charset = utf-8
-    insert_final_newline = true
-    trim_trailing_whitespace = true
 
 
 Project Status
