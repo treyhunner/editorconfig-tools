@@ -39,7 +39,7 @@ Here is an example of the command-line API we want to support::
 
     [Makefile]
     indent_style = tab
-    indent_size = N/A
+    indent_size = tab
 
     $ check_editorconfig --fix *
     Makefile: Converted tabs to spaces
