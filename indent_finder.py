@@ -6,11 +6,12 @@
 # a copy of the file LICENSE.txt along with this software.
 #
 
+import math
 import sys
 import re
 
 help = \
-"""Usage : %s [ --vim-output ] [ --verbose ] file1 file2 ... fileN
+"""Usage : %s [ --verbose ] file1 file2 ... fileN
 
 Display indentation used in the list of files. Possible answers are (with X
 being the number of spaces used for indentation):
@@ -23,24 +24,7 @@ being 8 positions) and then spaces to do the indentation, unless you reach 8
 spaces which are replaced by a tab. This is the vim source file indentation
 for example. In my opinion, this is the worst possible style.
 
---vim-output: output suitable to use inside vim:
-set sts=0 | set tabstop=4 | set noexpandtab | set shiftwidth=4
-
 """
-
-VERSION = '1.4'
-
-### Used when indentation is tab, to set tabstop in vim
-DEFAULT_TAB_WIDTH = 4
-
-### default values for files where indentation is not meaningful (empty files)
-# possible values:
-# DEFAULT_RESULT = ('space', 4)
-# DEFAULT_RESULT = ('space', 2)
-# DEFAULT_RESULT = ('space', 8)
-# DEFAULT_RESULT = ('tab', DEFAULT_TAB_WIDTH)
-
-DEFAULT_RESULT = ('space', 4)
 
 VERBOSE_QUIET = 0
 VERBOSE_INFO = 1
@@ -125,9 +109,11 @@ class IndentFinder:
     mail, if possible with the offending file.
     """
 
-    def __init__(self, default_result=DEFAULT_RESULT):
+    INDENT_RE = re.compile("^([ \t]+)([^ \t]+)")
+    MIXED_RE = re.compile("^(\t+)( +)$")
+
+    def __init__(self):
         self.clear()
-        self.default_result = default_result
 
     VERBOSITY = DEFAULT_VERBOSITY
 
@@ -136,12 +122,9 @@ class IndentFinder:
             self.parse_file(fname)
 
     def parse_file(self, fname):
-        f = open(fname)
-        l = f.readline()
-        while(l):
-            self.analyse_line(l)
-            l = f.readline()
-        f.close()
+        with open(fname) as f:
+            for line in f:
+                self.analyse_line(line)
 
     def clear(self):
         self.lines = {}
@@ -153,8 +136,6 @@ class IndentFinder:
 
         self.nb_processed_lines = 0
         self.nb_indent_hint = 0
-        self.indent_re = re.compile("^([ \t]+)([^ \t]+)")
-        self.mixed_re = re.compile("^(\t+)( +)$")
         self.skip_next_line = False
         self.previous_line_info = None
 
@@ -195,7 +176,7 @@ class IndentFinder:
         if len(line) > 0 and line[0] != ' ' and line[0] != '\t':
             return (LineType.NoIndent, '')
 
-        mo = self.indent_re.match(line)
+        mo = self.INDENT_RE.match(line)
         if not mo:
             deepdbg('analyse_line_type: line is not indented')
             return None
@@ -217,7 +198,7 @@ class IndentFinder:
 
         if '\t' in indent_part and ' ' in indent_part:
             # mixed mode
-            mo = self.mixed_re.match(indent_part)
+            mo = self.MIXED_RE.match(indent_part)
             if not mo:
                 # line is not composed of '\t\t\t    ', ignore it
                 return None
@@ -365,7 +346,7 @@ class IndentFinder:
         # => same or more lines with mixed than lines with space only
         #
 
-        result = None
+        result = (None, 0)
 
         # Detect space indented file
         if max_line_space >= max_line_mixed and max_line_space > max_line_tab:
@@ -375,15 +356,14 @@ class IndentFinder:
                 if self.lines['space%d' % i] > int(nb * 1.1):  # give a 10% threshold
                     indent_value = i
                     nb = self.lines['space%d' % indent_value]
+                    dbg("%d confidence: %d" % (indent_value, math.log(nb)))
 
-            if indent_value is None:  # no lines
-                result = self.default_result
-            else:
+            if indent_value is not None:  # no lines
                 result = ('space', indent_value)
 
         # Detect tab files
         elif max_line_tab > max_line_mixed and max_line_tab > max_line_space:
-            result = ('tab', DEFAULT_TAB_WIDTH)
+            result = ('tab', 0)
 
         # Detect mixed files
         elif max_line_mixed >= max_line_tab and max_line_mixed > max_line_space:
@@ -394,14 +374,9 @@ class IndentFinder:
                     indent_value = i
                     nb = self.lines['mixed%d' % indent_value]
 
-            if indent_value is None:  # no lines
-                result = self.default_result
-            else:
+            if indent_value is not None:  # no lines
                 result = ('mixed', (8, indent_value))
 
-        else:
-            # not enough information to make a decision
-            result = self.default_result
 
         info("Result: %s" % str(result))
         return result
@@ -414,47 +389,12 @@ class IndentFinder:
             itab, ispace = ival
             return '%s tab %d space %d' % (itype, itab, ispace)
 
-    def vim_output(self):
-        result = self.results()
-        indent_type, n = result
-        if indent_type == "space":
-            # spaces:
-            #   => set sts to the number of spaces
-            #   => set tabstop to the number of spaces
-            #   => expand tabs to spaces
-            #   => set shiftwidth to the number of spaces
-            return "set sts=%d | set tabstop=%d | set expandtab | set shiftwidth=%d \" (%s %d)" % (n, n, n, indent_type, n)
-
-        elif indent_type == "tab":
-            # tab:
-            #   => set sts to 0
-            #   => set tabstop to preferred value
-            #   => set expandtab to false
-            #   => set shiftwidth to tabstop
-            return "set sts=0 | set tabstop=%d | set noexpandtab | set shiftwidth=%d \" (%s)" % (DEFAULT_TAB_WIDTH, DEFAULT_TAB_WIDTH, indent_type)
-
-        if indent_type == 'mixed':
-            tab_indent, space_indent = n
-            # tab:
-            #   => set sts to 0
-            #   => set tabstop to tab_indent
-            #   => set expandtab to false
-            #   => set shiftwidth to space_indent
-            return "set sts=4 | set tabstop=%d | set noexpandtab | set shiftwidth=%d \" (%s %d)" % (tab_indent, space_indent, indent_type, space_indent)
-
 
 def main():
-    VIM_OUTPUT = 0
-
     file_list = []
     for opt in sys.argv[1:]:
-        if opt == "--vim-output":
-            VIM_OUTPUT = 1
-        elif opt == "--verbose" or opt == '-v':
+        if opt == "--verbose" or opt == '-v':
             IndentFinder.VERBOSITY += 1
-        elif opt == "--version":
-            print 'IndentFinder v%s' % VERSION
-            return
         elif opt[0] == "-":
             print help % sys.argv[0]
             return
@@ -468,19 +408,13 @@ def main():
         for fname in file_list:
             fi.clear()
             fi.parse_file(fname)
-            if VIM_OUTPUT:
-                print "%s : %s" % (fname, fi.vim_output())
-            else:
-                print "%s : %s" % (fname, str(fi))
+            print "%s : %s" % (fname, str(fi))
         return
 
     else:
         # only one file, don't print filename
         fi.parse_file_list(file_list)
-        if VIM_OUTPUT:
-            sys.stdout.write(fi.vim_output())
-        else:
-            print str(fi)
+        print str(fi)
 
 
 if __name__ == "__main__":
