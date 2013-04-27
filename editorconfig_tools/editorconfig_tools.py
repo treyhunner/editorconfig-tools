@@ -129,7 +129,8 @@ class EditorConfigChecker(EditorConfigToolObject):
             if type(f.newlines) is tuple and end_of_line:
                 self.errors.add("Mixed line endings found: %s" %
                                 ','.join(self.newlines[n] for n in f.newlines))
-            elif end_of_line is not None and newline != f.newlines:
+            elif (end_of_line is not None and f.newlines is not None and
+                  newline != f.newlines):
                 self.errors.add("Incorrect line ending found: %s" %
                                 self.newlines.get(f.newlines))
             if lineno and float(correctly_indented) / lineno < 0.05:
