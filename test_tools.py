@@ -56,6 +56,9 @@ class LineEndingTests(EditorConfigTestCase):
             "No final newline found",
         ])
 
+    def test_empty_file(self):
+        self.assertFileErrors('lf_empty.txt', [])
+
 
 class CharsetTests(EditorConfigTestCase):
 
