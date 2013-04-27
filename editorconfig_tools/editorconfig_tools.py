@@ -34,7 +34,7 @@ class EditorConfigChecker(EditorConfigToolObject):
         """Return error string iff incorrect characters found in indentation"""
         if indent_style == 'space' and '\t' in line:
             self.errors.add("Tab indentation found")
-        elif indent_style == 'tab' and re.search('^\s* \s*', line):
+        elif indent_style == 'tab' and re.search('^(\s* \t+|^ +)', line):
             self.errors.add("Space indentation found")
         return line
 
@@ -112,7 +112,8 @@ class EditorConfigChecker(EditorConfigToolObject):
                     handle_line(self.check_charset, 'charset')
                 line = handle_line(self.check_trailing_whitespace,
                            'trim_trailing_whitespace')
-                if ('indent_style' in properties and
+                if (properties.get('indent_style') == 'tab' or
+                    'indent_style' in properties and
                     'tab_width' in properties and
                     properties['indent_size'] == properties['tab_width']):
                     line = handle_line(self.check_indentation, 'indent_style')
