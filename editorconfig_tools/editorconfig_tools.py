@@ -133,8 +133,8 @@ class EditorConfigChecker(EditorConfigToolObject):
                   newline != f.newlines):
                 self.errors.add("Incorrect line ending found: %s" %
                                 self.newlines.get(f.newlines))
-            if lineno and float(correctly_indented) / lineno < 0.05:
-                self.errors.add("Over 5% of lines appear to be incorrectly indented")
+            if lineno and float(correctly_indented) / (lineno + 1) < 0.70:
+                self.errors.add("Over 30% of lines appear to be incorrectly indented")
             line = handle_line(self.check_final_newline,
                                'insert_final_newline')
             if self.auto_fix and line is not None:
