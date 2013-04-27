@@ -142,3 +142,30 @@ class TrailingWhitespaceTest(EditorConfigTestCase):
         self.assertFileErrors('trim_invalid2.txt', [
             "Trailing whitespace found"
         ])
+
+
+class IndentationTest(EditorConfigTestCase):
+
+    """Tests for EditorConfigChecker indent_style and indent_size"""
+
+    def test_space_indentation(self):
+        self.assertFileErrors('indent_space_2_valid.js', [])
+        self.assertFileErrors('indent_space_2_invalid_3.js', [
+            'Over 30% of lines appear to be incorrectly indented'
+        ])
+        self.assertFileErrors('indent_space_2_invalid_tab.js', [
+            'Tab indentation found'
+        ])
+        self.assertFileErrors('indent_space_2_invalid_mixed.js', [
+            'Tab indentation found'
+        ])
+
+    def test_tab_indentation(self):
+        self.assertFileErrors('indent_tab_valid.js', [])
+        self.assertFileErrors('indent_tab_valid_with_spaces.js', [])
+        self.assertFileErrors('indent_tab_invalid_space.js', [
+            'Space indentation found'
+        ])
+        self.assertFileErrors('indent_tab_invalid_mixed.js', [
+            'Space indentation found'
+        ])

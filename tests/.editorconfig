@@ -28,3 +28,12 @@ charset = utf-16le
 
 [trim_*.txt]
 trim_trailing_whitespace = true
+
+[indent_tab_*]
+indent_style = tab
+
+[indent_space_*]
+indent_style = space
+
+[indent_space_2_*]
+indent_size = 2
