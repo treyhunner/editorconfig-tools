@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 from unittest import TestCase
 from os.path import abspath
 
