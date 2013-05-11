@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from unittest import TestCase
+from unittest import TestCase, main
 from os.path import abspath
 
 from editorconfig import get_properties
@@ -169,3 +169,7 @@ class IndentationTest(EditorConfigTestCase):
         self.assertFileErrors('indent_tab_invalid_mixed.js', [
             'Space indentation found'
         ])
+
+
+if __name__ == "__main__":
+    main()
