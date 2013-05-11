@@ -52,3 +52,15 @@ Project Status
 
 This project is not yet completed.  Feel free to play with the existing code,
 but don't expect it to work well (or at all) yet.
+
+
+Running Tests
+-------------
+Tox is used to run tests with supported Python interpreters and measure code
+coverage.  To install tox::
+
+    pip install tox
+
+To run tests using tox::
+
+    tox
