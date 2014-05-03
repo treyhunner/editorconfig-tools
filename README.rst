@@ -64,3 +64,10 @@ coverage.  To install tox::
 To run tests using tox::
 
     tox
+
+Related Projects
+----------------
+
+* `eclint`_
+
+.. _eclint: https://github.com/jedmao/eclint
