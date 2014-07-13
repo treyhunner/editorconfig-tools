@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import sys
-from clint import args
+from clint import arguments
 from clint.textui import puts, colored, indent
 from os.path import abspath
 
@@ -25,6 +25,7 @@ def usage():
 
 
 def main():
+    args = arguments.Args()
     invalid_files = args.not_flags.not_files.all
     if any(f for f in args.flags.all if f not in FLAGS):
         usage()
