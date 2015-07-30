@@ -42,8 +42,8 @@ def main():
         checker = EditorConfigChecker(fix=fix)
         try:
             props = get_properties(abspath(filename))
-        except EditorConfigError, e:
-            print e
+        except EditorConfigError as e:
+            print(e)
             continue
         else:
             for error in checker.check(filename, props):
