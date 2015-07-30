@@ -23,7 +23,7 @@ def usage():
     puts('Arguments:')
     for flag, description in COMMANDS:
         with indent(2):
-            puts('{0:20} {1}'.format(colored.blue(flag), description))
+            puts('{0:20} {1}'.format(str(colored.blue(flag)), description))
 
 
 def main():
