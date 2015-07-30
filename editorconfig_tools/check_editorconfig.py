@@ -6,7 +6,7 @@ from clint import arguments
 from clint.textui import puts, colored, indent
 from os.path import abspath
 
-from editorconfig_tools import EditorConfigChecker
+from .editorconfig_tools import EditorConfigChecker
 from editorconfig import get_properties, EditorConfigError
 
 
