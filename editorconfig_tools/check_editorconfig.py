@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+from __future__ import absolute_import, division, print_function
+
 import sys
 from clint import arguments
 from clint.textui import puts, colored, indent
