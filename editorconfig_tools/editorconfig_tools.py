@@ -1,5 +1,4 @@
 import re
-from sets import Set
 
 
 class EditorConfigToolObject(object):
@@ -28,7 +27,7 @@ class EditorConfigChecker(EditorConfigToolObject):
 
     def __init__(self, fix=False):
         self.auto_fix = fix
-        self.errors = Set()
+        self.errors = set()
 
     def check_indentation(self, line, indent_style):
         """Return error string iff incorrect characters found in indentation"""

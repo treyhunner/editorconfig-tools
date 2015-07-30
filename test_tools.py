@@ -19,7 +19,7 @@ class EditorConfigTestCase(TestCase):
         props = get_properties(full_filename)
         checker = EditorConfigChecker()
         errors = checker.check(full_filename, props)
-        self.assertEquals((filename, errors), (filename, expected_errors))
+        self.assertEquals((filename, set(errors)), (filename, set(expected_errors)))
 
 
 class LineEndingTests(EditorConfigTestCase):
