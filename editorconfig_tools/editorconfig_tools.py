@@ -1,4 +1,7 @@
+import sys
 import re
+
+PY3 = sys.version_info >= (3, 0, 0)
 
 
 class EditorConfigToolObject(object):
@@ -96,7 +99,9 @@ class EditorConfigChecker(EditorConfigToolObject):
             else:
                 return line
 
-        with open(filename, 'Ur+' if self.auto_fix else 'Ur') as f:
+        open_opts = {'encoding': 'latin1'} if PY3 else {}
+
+        with open(filename, 'Ur+' if self.auto_fix else 'Ur', **open_opts) as f:
             # Loop over file lines and append each error found to error list
             if properties.get('end_of_line') in self.line_endings:
                 end_of_line = properties['end_of_line']
