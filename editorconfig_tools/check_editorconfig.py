@@ -34,7 +34,7 @@ def main():
         usage()
         sys.exit()
     if invalid_files:
-        print "Invalid files found"  # TODO
+        print("Invalid files found")  # TODO
         sys.exit(1)
     fix = args.contains(('-f', '--fix'))
 
@@ -47,7 +47,7 @@ def main():
             continue
         else:
             for error in checker.check(filename, props):
-                print "%s: %s" % (filename, error)
+                print("%s: %s" % (filename, error))
 
 
 if __name__ == '__main__':
