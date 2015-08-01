@@ -1,5 +1,8 @@
+from __future__ import absolute_import, division, print_function
+import sys
 import re
-from sets import Set
+
+PY3 = sys.version_info >= (3, 0, 0)
 
 
 class EditorConfigToolObject(object):
@@ -28,7 +31,7 @@ class EditorConfigChecker(EditorConfigToolObject):
 
     def __init__(self, fix=False):
         self.auto_fix = fix
-        self.errors = Set()
+        self.errors = set()
 
     def check_indentation(self, line, indent_style):
         """Return error string iff incorrect characters found in indentation"""
@@ -97,7 +100,9 @@ class EditorConfigChecker(EditorConfigToolObject):
             else:
                 return line
 
-        with open(filename, 'Ur+' if self.auto_fix else 'Ur') as f:
+        open_opts = {'encoding': 'latin1'} if PY3 else {}
+
+        with open(filename, 'Ur+' if self.auto_fix else 'Ur', **open_opts) as f:
             # Loop over file lines and append each error found to error list
             if properties.get('end_of_line') in self.line_endings:
                 end_of_line = properties['end_of_line']

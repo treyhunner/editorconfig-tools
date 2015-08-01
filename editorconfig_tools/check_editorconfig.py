@@ -1,10 +1,12 @@
 #!/usr/bin/env python
+from __future__ import absolute_import, division, print_function
+
 import sys
 from clint import arguments
 from clint.textui import puts, colored, indent
 from os.path import abspath
 
-from editorconfig_tools import EditorConfigChecker
+from .editorconfig_tools import EditorConfigChecker
 from editorconfig import get_properties, EditorConfigError
 
 
@@ -21,7 +23,7 @@ def usage():
     puts('Arguments:')
     for flag, description in COMMANDS:
         with indent(2):
-            puts('{0:20} {1}'.format(colored.blue(flag), description))
+            puts('{0:20} {1}'.format(str(colored.blue(flag)), description))
 
 
 def main():
@@ -34,7 +36,7 @@ def main():
         usage()
         sys.exit()
     if invalid_files:
-        print "Invalid files found"  # TODO
+        print("Invalid files found")  # TODO
         sys.exit(1)
     fix = args.contains(('-f', '--fix'))
 
@@ -42,12 +44,12 @@ def main():
         checker = EditorConfigChecker(fix=fix)
         try:
             props = get_properties(abspath(filename))
-        except EditorConfigError, e:
-            print e
+        except EditorConfigError as e:
+            print(e)
             continue
         else:
             for error in checker.check(filename, props):
-                print "%s: %s" % (filename, error)
+                print("%s: %s" % (filename, error))
 
 
 if __name__ == '__main__':

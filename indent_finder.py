@@ -5,6 +5,7 @@
 # This program is distributed under the BSD license. You should have received
 # a copy of the file LICENSE.txt along with this software.
 #
+from __future__ import absolute_import, division, print_function
 
 import math
 import sys
@@ -56,7 +57,7 @@ def deepdbg(s):
 
 def log(level, s):
     if level <= IndentFinder.VERBOSITY:
-        print s
+        print(s)
 
 
 class IndentFinder:
@@ -396,7 +397,7 @@ def main():
         if opt == "--verbose" or opt == '-v':
             IndentFinder.VERBOSITY += 1
         elif opt[0] == "-":
-            print help % sys.argv[0]
+            print(help % sys.argv[0])
             return
         else:
             file_list.append(opt)
@@ -408,13 +409,13 @@ def main():
         for fname in file_list:
             fi.clear()
             fi.parse_file(fname)
-            print "%s : %s" % (fname, str(fi))
+            print("%s : %s" % (fname, str(fi)))
         return
 
     else:
         # only one file, don't print filename
         fi.parse_file_list(file_list)
-        print str(fi)
+        print(str(fi))
 
 
 if __name__ == "__main__":
