@@ -51,6 +51,3 @@ def main():
             for error in checker.check(filename, props):
                 print("%s: %s" % (filename, error))
 
-
-if __name__ == '__main__':
-    main()
