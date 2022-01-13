@@ -1,3 +1,4 @@
+/editorconfig_tools/version.py
 *.pyc
 EditorConfig_Tools.egg-info/*
 build/*
